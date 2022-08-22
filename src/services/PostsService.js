@@ -33,6 +33,11 @@ class PostsService {
         const res = await api.post('/api/posts', postData)
         AppState.posts = new Post(res.data.posts)
     }
+
+    async deletePosts(postId) {
+        const res = await api.delete(`/api/posts/${postId}`)
+        AppState.posts = res.data.posts
+    }
 }
 
 
