@@ -13,12 +13,36 @@
         <label for="coverImg">Cover Image:</label>
         <input type="url" class="form-control" v-model="editable.coverImg" required name="coverImg">
       </div>
-      <div>
-        <label for="bio">Bio:</label>
-        <textarea type="text" class="form-control" v-model="editable.bio" required name="bio" rows="8"
-          style="resize:none"></textarea>
+     <div>
+       <label for="name">Email:</label>
+        <input type="text" class="form-control" v-model="editable.email" required name="email">
       </div>
       <div>
+        <label for="name">Github:</label>
+        <input type="text" class="form-control" v-model="editable.github" name="github">
+      </div>
+      <div>
+        <label for="name">Linkedin:</label>
+        <input type="text" class="form-control" v-model="editable.linkedin" name="linkedin">
+      </div>
+      <div>
+        <label for="name">Class:</label>
+        <input type="text" class="form-control" v-model="editable.class"  name="class">
+      </div>
+      <div>
+        <label for="name">Graduated:</label>
+        <input type="text" class="form-control" v-model="editable.graduated" name="graduated">
+      </div>
+        <div>
+          <label for="bio">Bio:</label>
+          <textarea type="text" class="form-control" v-model="editable.bio" required name="bio" rows="8"
+            style="resize:none"></textarea>
+        </div>
+
+
+
+
+     <div>
         <button type="submit" class="btn btn-primary w-100 mt-2">Save</button>
       </div>
     </div>

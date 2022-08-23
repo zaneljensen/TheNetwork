@@ -1,5 +1,8 @@
 <template>
   <div class="container">
+    <div v-for="a in ads" :key="a.id">
+          <Adcard :ad="a"/>
+       </div>
     <div class="row my-3">
       <div class="col-md-4">
         <AccountForm />
@@ -16,7 +19,8 @@ export default {
     name: "Account",
     setup() {
         return {
-            account: computed(() => AppState.account)
+            account: computed(() => AppState.account),
+            ads: computed(() => AppState.ads)
         };
     },
     components: { AccountForm }

@@ -1,7 +1,13 @@
 <template>
   <div class="container">
     <div class="row">
-      <div class="col-md-10 m-auto my-3">
+        <div v-for="a in ads" :key="a.id">
+          <Adcard :ad="a"/>
+       </div>
+     <div>
+     <ProfileSearchResult />
+     </div>
+     <div class="col-md-10 m-auto my-3">
        <PostForm />
       </div>
       <div class="col-md-10">
@@ -15,7 +21,7 @@
            <button @click="changePage(nextPage)" class="btn btn-primary text-end" :disabled="!nextPage">Older Posts</button>
         </div>
        </div>
-
+      
     </div>
   </div>
 </template>
@@ -29,6 +35,8 @@ import { logger } from '../utils/Logger.js';
 import Pop from '../utils/Pop.js';
 import PostCard from '../components/PostCard.vue';
 import PostForm from '../components/PostForm.vue';
+import Adcard from '../components/Adcard.vue';
+import { adsService } from '../services/AdsService.js';
 // import PostCard from '../components/PostCard.vue';
 
 export default {
@@ -43,16 +51,25 @@ export default {
             }
         }
 
+        async function getAds() {
+          try {
+            await adsService.getAds()
+          } catch (error) {
+            
+          }
+        }
+
           
 
         onMounted(() => {getPosts()});
-     
+        onMounted(() => {getAds()});
 
         return {
             posts: computed(() => AppState.posts),
             activePost: computed(() => AppState.activePost),
             nextPage: computed(() => AppState.nextPage),
             previousPage: computed(() => AppState.previousPage),
+            ads: computed(() => AppState.ads),
 
             async changePage(url) {
               try {
@@ -62,7 +79,7 @@ export default {
             }
         }; 
     },
-    components: { PostCard, PostForm }
+    components: { PostCard, PostForm, Adcard }
 }
 </script>
 

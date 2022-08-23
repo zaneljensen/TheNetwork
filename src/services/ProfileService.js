@@ -7,6 +7,14 @@ class ProfileService {
         const res = await api.get(`api/profiles/${id}`)
         AppState.activeProfile = new Profile(res.data)
     }
+
+    async getNextProfilePostPage(url) {
+        const res = await api.get(`${url}`)
+        AppState.posts = res.data.posts
+        AppState.nextPage = res.data.older
+        AppState.previousPage = res.data.newer
+    }
+
 }
 
 

@@ -36,8 +36,22 @@ class PostsService {
 
     async deletePosts(postId) {
         const res = await api.delete(`/api/posts/${postId}`)
+
+    }
+
+    async getPostsBySearch(searchTerm) {
+        const res = await api.get(`/api/posts`, {
+            params: {
+                query: searchTerm
+            }
+        })
         AppState.posts = res.data.posts
     }
+
+    async likePost(id) {
+        const res = await api.post(`/api/posts/${id}/like`)
+    }
+
 }
 
 

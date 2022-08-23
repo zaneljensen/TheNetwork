@@ -10,13 +10,12 @@
            <h5><b>{{post.creator.name}}</b> - {{ new Date(post.createdAt).toLocaleDateString('en-US')}}</h5>
            <p class="text-center">{{post.body}}</p>
            <img class="img-fluid" :src="post.imgUrl" alt="" :title="post.creator.name">
-           <p>{{post.likeIds}}</p>
-           <div class="div">
+           <p><b>Likes:</b>  {{post.likeIds.length}}</p> 
+           
+           <div>
+            <button v-if="user.isAuthenticated" @click="likePost(post.id)" class="btn btn-primary">"Like"</button>
             </div>
-           <div v-if="post.creator.id == account.id">
-            <button @click="toggleEdit">Edit</button>
-            <PostForm v-if="editing" />
-           </div>
+             <button class="btn btn-primary" v-if="user.isAuthenticated" v-show="post.creator.id == account.id" @click="deletePosts()">Delete</button>
 
            
         </div>
@@ -27,24 +26,49 @@
 <script>
 import { Post } from '../models/Post.js'
 import { AppState } from '../AppState.js';
-import { computed, ref } from '@vue/runtime-core';
+import { computed} from '@vue/runtime-core';
+import { postsService } from '../services/PostsService.js';
+import { logger } from '../utils/Logger.js';
+import Pop from '../utils/Pop.js';
+
+import { Profile } from '../models/Profile.js';
 
 export default {
     props: {
-        post: { type: Post, required: true }
+        post: { type: Object, required: true }
     },
     
     setup(props) {
-
-        const editing = ref(false)
+       
+     
+        
         
         return {
-            editing,
+            
+      async likePost(id) {    
+        try {
+          postsService.likePost(id)   
+          } catch (error) {
+          
+        }
+      },
+          
+        
+
+
+            user: computed(() => AppState.user),
             account: computed(() => AppState.account),
-            toggleEdit() {
-                AppState.activePost = props.post
-                this.editing = !this.editing
+
+            async deletePosts() {
+              try {
+                await postsService.deletePosts(props.post.id);
+              } catch (error) {
+                logger.error(error)
+                Pop.toast(error)
+              }
+              postsService.deletePosts(props.post.id)
             },
+         
             
             setActivePost() {
                 AppState.activePost = props.post

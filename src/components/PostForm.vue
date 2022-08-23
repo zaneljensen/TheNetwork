@@ -51,7 +51,7 @@ export default {
                   editable.value = {}
                 } catch (error) {
                   logger.error('[Create or Edit Post]', error)
-                  Pop.error(error)
+                  
                     
                 }
             }

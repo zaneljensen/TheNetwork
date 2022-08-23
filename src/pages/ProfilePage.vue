@@ -16,7 +16,9 @@
  </div>
        </div>
             
- 
+ <div v-for="a in ads" :key="a.id">
+          <Adcard :ad="a"/>
+       </div>
   
   
 
@@ -26,12 +28,16 @@
          <div class="mx-auto my-3 col-md-10" v-for="p in posts" :key="p.id">
           <PostCard :post="p" />
         </div>
-
+<div class="d-flex justify-content-around">
+      
+           <button @click="changePage(previousPage)"  class="btn btn-primary" :disabled="!peviousPage">Newer Posts</button>
+        
+  
+           <button @click="changePage(nextPage)" class="btn btn-primary text-end" >Older Posts</button>
+        </div>
      </div>
     </div>
       <div class="profile-page" v-if="profile"></div>
-    <router-link class="btn btn-primary col-3" :to="{name: 'Account'}">Edit Accoount
-  </router-link>
     
 </template>
 
@@ -57,7 +63,13 @@ export default {
         Pop.error(error)
       }
     }
-    
+    async function getAds() {
+          try {
+            await adsService.getAds()
+          } catch (error) {
+            
+          }
+        }
     
     async function getProfileById() {
       try {
@@ -74,12 +86,21 @@ export default {
       getPostsByCreatorId()
 
     })
+   
+   onMounted(() => {getAds()})
 
     return {
       account: computed(() => AppState.account),
       profile: computed(() => AppState.activeProfile),
       cover: computed(() => `url(${AppState.activeProfile?.coverImg || 'https://cdn.pixabay.com/photo/2017/07/16/17/33/background-2509983_1280.jpg'})`),
-      posts: computed(() => AppState.profilePosts)
+      posts: computed(() => AppState.profilePosts),
+      previousPage: computed(() => AppState.previousPage),
+      nextPage: computed(() => AppState.nextPage),
+      ads: computed(() => AppState.ads),
+
+      async changePage(url) {
+        await postsService.changePage(url)
+      }
     }
   }
 }
